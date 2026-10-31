@@ -38,17 +38,26 @@ The testbench `xschem/inversor_test.sch` instantiates the inverter with:
 
 - Supply: 1.8 V DC
 - Input: pulse 0 to 1.8 V, 1 ns rise/fall, 5 ns width, 10 ns period
-- Load: `res_iso_pw` resistor (W = L = 2.65 µm) to ground
-- Corner: `tt`
-- Analysis: transient, 0.1 ns step, 40 ns stop time (`.control` block saves `inversor_test.raw`)
+- Load: 10 fF capacitor to ground
+- Corner: `tt`, T = 27 °C
+- Analysis: transient, 10 ps step, 40 ns stop time. The `.control` block measures the propagation delays with `meas` and saves `inversor_test.raw`.
 
-<!-- TODO: add the transient waveform (in/out) as results/transient.png and the measured values below. -->
+Propagation delays are measured between the 50% points (0.9 V) of the input and output:
+
+```spice
+meas tran tphl TRIG v(in) VAL=0.9 RISE=1 TARG v(out) VAL=0.9 FALL=1
+meas tran tplh TRIG v(in) VAL=0.9 FALL=1 TARG v(out) VAL=0.9 RISE=1
+```
+
+![Transient response](results/transient.png)
 
 | Metric | Value |
 |---|---|
-| t<sub>pHL</sub> | TODO |
-| t<sub>pLH</sub> | TODO |
-| Output swing | TODO |
+| t<sub>pHL</sub> | 116.9 ps |
+| t<sub>pLH</sub> | 163.5 ps |
+| t<sub>p</sub> (average) | 140.2 ps |
+
+Pre-layout results (no layout parasitics). t<sub>pLH</sub> is larger than t<sub>pHL</sub> because the PMOS (W = 2.1 µm) is still weaker than the NMOS (W = 1.05 µm) despite the 2:1 width ratio.
 
 ### 3. Physical layout (Magic)
 The layout (`magic/inversor.mag`) is drawn in the `sky130B` technology using the PDK parametrized cells for both transistors, routed in metal 1, with labeled ports `Vdd`, `Vout`, `Vin`, `Vss`.
@@ -71,7 +80,7 @@ The layout is exported to `gds/inversor.gds` (top cell `inversor`, with the PMOS
 | Stage | Status |
 |---|---|
 | Schematic + symbol | Done |
-| Testbench / transient simulation | Testbench configured; results to be added |
+| Testbench / transient simulation | Done (t<sub>pHL</sub> and t<sub>pLH</sub> measured) |
 | Layout + DRC | Done, 0 DRC violations |
 | Extraction | Done |
 | LVS | **Not yet clean** (see below) |
@@ -143,7 +152,11 @@ netgen -batch lvs "spice/inversor.spice inversor" "spice/inversor_schema.spice i
 ```
 
 ## Authors
+
+Group 07, Electronic Devices, UTN FRC (2026).
+
 - Tomas Posleman
+- <!-- TODO: add teammates -->
 
 ## License
 
