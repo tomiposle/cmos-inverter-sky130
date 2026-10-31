@@ -1,0 +1,12 @@
+# Simulation outputs (large, regenerable)
+*.raw
+
+# Editor / OS
+*~
+*.swp
+.DS_Store
+
+# Never commit the PDK
+sky130A/
+sky130B/
+open_pdks/

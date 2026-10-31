@@ -1,0 +1,6 @@
+** sch_path: /home/vboxuser/inversor.sch
+.subckt inversor Vdd Vout Vin Vss
+*.PININFO Vdd:I Vss:I Vout:O Vin:I
+XM1 Vout Vin Vdd Vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2.1 nf=1
+XM2 Vout Vin Vss Vss sky130_fd_pr__nfet_01v8 L=0.15 W=1.05 nf=1
+.ends
