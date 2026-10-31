@@ -143,11 +143,7 @@ netgen -batch lvs "spice/inversor.spice inversor" "spice/inversor_schema.spice i
 ```
 
 ## Authors
-
-Group 07, Electronic Devices, UTN FRC (2026).
-
 - Tomas Posleman
-- <!-- TODO: add teammates -->
 
 ## License
 
